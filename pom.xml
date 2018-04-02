@@ -12,7 +12,8 @@
 	<description>Demo project for Spring Boot</description>
 
 	<modules>
-		<module>csrf-protection-demo-server</module>
-		<module>csrf-protection-demo-client</module>
+		<module>demo-server</module>
+		<module>demo-client-allow</module>
+		<module>demo-client-deny</module>
 	</modules>
 </project>

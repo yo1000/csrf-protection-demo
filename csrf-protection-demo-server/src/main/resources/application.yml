@@ -1,8 +1,0 @@
-server:
-  port: 8081
-
-security:
-  basic:
-    enabled: false
-  enable-csrf: true
-

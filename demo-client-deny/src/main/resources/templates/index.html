@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8"/>
+</head>
+<body>
+<button id="protectCookieHeader">Protect with Cookie &amp; Header</button>
+<button id="protect">Protect</button>
+<button id="ignore">Ignore</button>
+<pre id="result"></pre>
+<script>
+(() => {
+    const protectCookieHeaderButton = document.getElementById('protectCookieHeader')
+    const protectButton = document.getElementById('protect')
+    const ignoreButton = document.getElementById('ignore')
+    const result = document.getElementById('result')
+
+    protectCookieHeaderButton.addEventListener('click', () => {
+        const token = '1234random5678'
+        document.cookie = `XSRF-TOKEN=${token}`;
+
+        const xhr = new XMLHttpRequest()
+        xhr.open('POST', 'http://user:pass@localhost:8081/csrf/demo/protect')
+        xhr.withCredentials = true
+        xhr.setRequestHeader('X-XSRF-TOKEN', token)
+
+        xhr.onreadystatechange = () => {
+            console.debug(xhr.readyState)
+            console.debug(xhr.status)
+
+            if (xhr.status === 200) {
+                console.log(xhr.response)
+                console.log(xhr.responseText)
+
+                result.innerText = xhr.response + "\n" + xhr.responseText
+            }
+        }
+
+        xhr.send()
+    })
+
+    protectButton.addEventListener('click', () => {
+        const xhr = new XMLHttpRequest()
+        xhr.open('POST', 'http://user:pass@localhost:8081/csrf/demo/protect')
+        xhr.withCredentials = true
+
+        xhr.onreadystatechange = () => {
+            console.debug(xhr.readyState)
+            console.debug(xhr.status)
+
+            if (xhr.status === 200) {
+                console.log(xhr.response)
+                console.log(xhr.responseText)
+
+                result.innerText = xhr.response + "\n" + xhr.responseText
+            }
+        }
+
+        xhr.send()
+    })
+
+    ignoreButton.addEventListener('click', () => {
+        const xhr = new XMLHttpRequest()
+        xhr.open('POST', 'http://localhost:8081/csrf/demo/ignore')
+
+        xhr.onreadystatechange = () => {
+            console.debug(xhr.readyState)
+            console.debug(xhr.status)
+
+            if (xhr.status === 200) {
+                console.log(xhr.response)
+                console.log(xhr.responseText)
+
+                result.innerText = xhr.response + "\n" + xhr.responseText
+            }
+        }
+
+        xhr.send()
+    })
+})()
+</script>
+</body>
+</html>
